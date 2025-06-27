@@ -5,6 +5,7 @@
 
 .env
 .idea
+postgres-data
 
 package-lock.json
 
@@ -157,7 +158,8 @@ fabric.properties
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
