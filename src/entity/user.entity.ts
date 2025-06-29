@@ -3,10 +3,15 @@ import {
   CreateDateColumn,
   Entity,
   Generated,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   VersionColumn,
 } from 'typeorm';
+import { ProfileModel } from './profile.entity';
+import { PostModel } from './post.entity';
 
 export enum Role {
   USER = 'user',
@@ -21,31 +26,34 @@ export class UserModel {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({
-    // 자동으로 유추
-    type: 'varchar',
+  @Column()
+  email: string;
 
-    // 자동으로 유추
-    name: 'title',
-
-    // 값의 길이
-    length: 300,
-
-    nullable: true,
-    update: true,
-
-    // find() 를 실행할 때 기본으로 값을 불러올지
-    // 기본값이 true
-    select: false,
-
-    // 기본 값 설정
-    default: 'default value',
-
-    // 컬럼 중에서 유일무이한 값이 되어야하는지
-    // 기본 값은 false
-    unique: false,
-  })
-  title: string;
+  // @Column({
+  //   // 자동으로 유추
+  //   type: 'varchar',
+  //
+  //   // 자동으로 유추
+  //   name: 'title',
+  //
+  //   // 값의 길이
+  //   length: 300,
+  //
+  //   nullable: true,
+  //   update: true,
+  //
+  //   // find() 를 실행할 때 기본으로 값을 불러올지
+  //   // 기본값이 true
+  //   select: false,
+  //
+  //   // 기본 값 설정
+  //   default: 'default value',
+  //
+  //   // 컬럼 중에서 유일무이한 값이 되어야하는지
+  //   // 기본 값은 false
+  //   unique: false,
+  // })
+  // title: string;
 
   @Column({
     type: 'enum',
@@ -70,4 +78,11 @@ export class UserModel {
   @Column()
   @Generated('uuid')
   additionalId: number;
+
+  @OneToOne(() => ProfileModel, (profile) => profile.user)
+  @JoinColumn()
+  profile: ProfileModel;
+
+  @OneToMany(() => PostModel, (post) => post.author)
+  posts: PostModel[];
 }
